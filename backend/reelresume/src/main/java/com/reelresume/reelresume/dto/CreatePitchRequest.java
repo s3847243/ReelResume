@@ -6,6 +6,7 @@ import lombok.Data;
 public class CreatePitchRequest {
     private String videoUrl;
     private String resumeUrl;
+    private String screenRecordingUrl;
     private String slug;      // optional (can be generated)
     private String linkType;  // "default" or "custom"
 }

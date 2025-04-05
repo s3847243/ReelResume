@@ -30,4 +30,10 @@ public class UploadController {
         String videoUrl = uploadService.uploadVideo(file);
         return ResponseEntity.ok(Map.of("videoUrl", videoUrl));
     }
+    @PostMapping("/screen")
+    public ResponseEntity<Map<String, String>> uploadScreenRecording(@RequestParam("file") MultipartFile file) {
+        String screenUrl = uploadService.uploadVideo(file); // Reuse same logic
+        return ResponseEntity.ok(Map.of("screenRecordingUrl", screenUrl));
+    }
+
 }

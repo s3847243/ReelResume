@@ -21,6 +21,7 @@ public class PitchService {
         return new PitchDTO(
             pitch.getVideoUrl(),
             pitch.getResumeUrl(),
+            pitch.getScreenRecordingUrl(),
             pitch.getSlug(),
             pitch.getLinkType(),
             pitch.isPaid(),
@@ -30,6 +31,7 @@ public class PitchService {
     public Pitch createPitchFromRequest(CreatePitchRequest request) {
         Pitch pitch = new Pitch();
         pitch.setVideoUrl(request.getVideoUrl());
+        pitch.setScreenRecordingUrl(request.getScreenRecordingUrl());
         pitch.setResumeUrl(request.getResumeUrl());
         pitch.setLinkType(request.getLinkType());
         pitch.setPaid(false);

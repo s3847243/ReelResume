@@ -21,5 +21,6 @@ public class Pitch {
     private boolean isPaid;
     private String linkType;
     private String stripeSessionId;
+    private String screenRecordingUrl;
     private LocalDateTime createdAt = LocalDateTime.now();
 }

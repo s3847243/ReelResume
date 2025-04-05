@@ -10,6 +10,7 @@ import lombok.Data;
 public class PitchDTO {
     private String videoUrl;
     private String resumeUrl;
+    private String screenRecordingUrl;
     private String slug;
     private String linkType;
     private boolean isPaid;
