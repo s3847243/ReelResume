@@ -35,4 +35,12 @@ public class PitchController {
         Pitch pitch = pitchService.getPitchBySlug(slug);
         return ResponseEntity.ok(pitchService.toDto(pitch));
     }
+    @GetMapping("/by-session/{sessionId}")
+    public ResponseEntity<PitchDTO> getPitchBySession(@PathVariable String sessionId) {
+        Pitch pitch = pitchService.getPitchBySessionId(sessionId);
+        if (pitch == null || !pitch.isPaid()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pitchService.toDto(pitch));
+    }
 }

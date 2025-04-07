@@ -19,6 +19,7 @@ public class PitchService {
     private PitchRepository pitchRepository;
     public PitchDTO toDto(Pitch pitch) {
         return new PitchDTO(
+            pitch.getId(),
             pitch.getVideoUrl(),
             pitch.getResumeUrl(),
             pitch.getScreenRecordingUrl(),
@@ -58,5 +59,8 @@ public class PitchService {
     public Pitch getPitchBySlug(String slug) {
         Optional<Pitch> pitch = pitchRepository.findBySlug(slug);
         return pitch.orElseThrow(() -> new RuntimeException("Pitch not found"));
+    }
+    public Pitch getPitchBySessionId(String sessionId) {
+        return pitchRepository.findByStripeSessionId(sessionId);
     }
 }

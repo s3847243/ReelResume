@@ -9,6 +9,8 @@ public class FileValidator {
     }
 
     public static boolean isValidVideo(MultipartFile file) {
+        System.out.println("Received file type: " + file.getContentType());
+
         return file.getContentType().startsWith("video/");
     }
 }

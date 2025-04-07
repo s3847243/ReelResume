@@ -9,5 +9,6 @@ import com.reelresume.reelresume.model.Pitch;
 public interface PitchRepository extends MongoRepository<Pitch,String> {
     Optional<Pitch> findBySlug(String string);
     boolean existsBySlug(String slug);
-    
+    Pitch findByStripeSessionId(String stripeSessionId); 
+
 }

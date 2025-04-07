@@ -1,42 +1,23 @@
-import { FaBarsStaggered } from 'react-icons/fa6';
-import { NavLink } from 'react-router-dom';
-import NavLinks from './NavLinks';
-const Navbar = () => {
+import React from 'react';
+import { Camera } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+export function Navbar() {
   return (
-    <nav className='bg-base-200'>
-      <div className='navbar align-element'>
-        <div className='navbar-start'>
-          {/* TITLE */}
-          <NavLink
-            to='/'
-            className='hidden lg:flex btn btn-primary text-3xl items-center'
-          >
-            RR
-          </NavLink>
-          {/* DROPDOWN */}
-          <div className='dropdown'>
-            <label tabIndex={0} className='btn btn-ghost lg:hidden'>
-              <FaBarsStaggered className='h-6 w-6' />
-            </label>
-            <ul
-              tabIndex={0}
-              className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52'
-            >
-              <NavLinks />
-            </ul>
+    <header className="bg-white shadow-sm">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="flex justify-between items-center">
+          <Link to="/" className="flex items-center">
+            <Camera className="h-8 w-8 text-indigo-600" />
+            <span className="ml-2 text-xl font-bold text-gray-900">ReelResume</span>
+          </Link>
+          <div className="flex space-x-6">
+            <Link to="/" className="text-gray-600 hover:text-gray-900">Home</Link>
+            <Link to="/about" className="text-gray-600 hover:text-gray-900">About</Link>
+            <Link to="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
           </div>
         </div>
-        <div className='navbar-center hidden lg:flex'>
-          <ul className='menu menu-horizontal'>
-            <NavLinks />
-          </ul>
-        </div>
-        <div className='navbar-end'>
-          
-          
-        </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   );
-};
-export default Navbar;
+}

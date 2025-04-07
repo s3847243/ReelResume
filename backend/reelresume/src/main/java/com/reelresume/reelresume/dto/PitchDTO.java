@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PitchDTO {
+    private String id;
     private String videoUrl;
     private String resumeUrl;
     private String screenRecordingUrl;
