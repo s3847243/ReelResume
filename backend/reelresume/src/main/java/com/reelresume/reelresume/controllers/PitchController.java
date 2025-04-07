@@ -43,4 +43,12 @@ public class PitchController {
         }
         return ResponseEntity.ok(pitchService.toDto(pitch));
     }
+    @GetMapping("/slug/{slug}")
+    public ResponseEntity<PitchDTO> getBySlug(@PathVariable String slug) {
+        Pitch pitch = pitchService.getPitchBySlug(slug);
+        if (pitch == null || !pitch.isPaid()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pitchService.toDto(pitch));
+    }
 }

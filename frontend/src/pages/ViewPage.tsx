@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { FileText, Clock } from 'lucide-react';
 
 interface Pitch {
   videoUrl: string;
@@ -48,41 +47,33 @@ export default function ViewPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-6 sm:px-10">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold text-center text-indigo-700 mb-8">
-          🎥 Pitch: {pitch.slug}
-        </h1>
-
-        {/* Video Section */}
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold mb-2 text-gray-700">Introduction Video</h2>
-          <video
-            src={pitch.videoUrl}
-            controls
-            className="w-full rounded-lg shadow-md"
-          />
-        </div>
-
-        {/* Resume Section */}
-        <div className="mb-10">
-          <h2 className="text-xl font-semibold mb-2 text-gray-700 flex items-center">
-            <FileText className="h-5 w-5 mr-2" />
-            Resume
-          </h2>
-          <div className="h-[600px] border rounded-lg shadow-md overflow-hidden">
-            <iframe
-              src={pitch.resumeUrl}
-              title="Resume"
-              className="w-full h-full"
+    <div className="min-h-screen bg-gradient-to-r from-indigo-50 to-purple-50 py-10 px-4">
+      <div className="max-w-7xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          {/* Left: Video */}
+          <div className="p-6 flex flex-col items-center justify-center bg-gray-100">
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">🎥 Your Pitch</h2>
+            <video
+              src={pitch.videoUrl}
+              controls
+              className="w-full max-w-xl rounded-lg shadow-lg border"
             />
+            <p className="mt-3 text-sm text-gray-500">
+              Uploaded on: {new Date(pitch.createdAt).toLocaleDateString()}
+            </p>
           </div>
-        </div>
 
-        {/* Optional Metadata */}
-        <div className="text-sm text-gray-500 flex items-center">
-          <Clock className="h-4 w-4 mr-1" />
-          Uploaded on: {new Date(pitch.createdAt).toLocaleDateString()}
+          {/* Right: Resume */}
+          <div className="p-6 bg-white">
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">📄 Resume</h2>
+            <div className="h-[600px] border rounded-lg overflow-hidden shadow">
+              <iframe
+                src={pitch.resumeUrl}
+                title="Resume"
+                className="w-full h-full"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

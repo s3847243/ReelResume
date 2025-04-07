@@ -8,6 +8,7 @@ import { Contact } from './pages/Contact';
 import { GetStarted } from './pages/GetStarted';
 import NextStep from './components/NextStep';
 import Success from './pages/Success';
+import ViewPage from './pages/ViewPage';
 function App() {
   return (
     <Router>
@@ -20,6 +21,7 @@ function App() {
           <Route path="/get-started" element={<GetStarted />} />
           <Route path="/next-step" element={<NextStep />} />
           <Route path="/success" element={<Success />} />
+          <Route path="/view/:slug" element={<ViewPage />} />
 
         </Routes>
         <Footer />
