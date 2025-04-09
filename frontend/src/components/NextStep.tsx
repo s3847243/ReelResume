@@ -47,6 +47,20 @@ const NextStep: React.FC = () => {
   const handleContinue = async () => {
     try {
       // Upload resume
+      // If custom slug is selected, check its availability one more time
+      if (linkType === 'custom') {
+        setCheckingSlug(true);
+        const res = await fetch(`http://localhost:8080/api/slug/check?value=${customSlug}`);
+        setCheckingSlug(false);
+
+        if (res.status !== 200) {
+          setSlugAvailable(false); // this triggers the "Taken" message in the UI
+          alert('This custom slug is already taken. Please choose another one.');
+          return; // stop the flow
+        } else {
+          setSlugAvailable(true); // still valid
+        }
+      }
       const resumeForm = new FormData();
       resumeForm.append('file', resumeFile);
       const resumeRes = await fetch('http://localhost:8080/api/upload/resume', { method: 'POST', body: resumeForm });
@@ -120,7 +134,9 @@ const NextStep: React.FC = () => {
             Custom slug:
             <input
               type="text"
-              className="ml-2 border px-2 py-1 rounded"
+              className={`ml-2 border px-2 py-1 rounded ${
+                linkType !== 'custom' ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''
+              }`}
               value={customSlug}
               onChange={(e) => setCustomSlug(e.target.value)}
               disabled={linkType !== 'custom'}
@@ -133,7 +149,10 @@ const NextStep: React.FC = () => {
               {checkingSlug ? 'Checking...' : 'Check'}
             </button>
             {slugAvailable === true && <span className="text-green-600 ml-2">Available</span>}
-            {slugAvailable === false && <span className="text-red-600 ml-2">Taken</span>}
+            {/* {slugAvailable === false && <span className="text-red-600 ml-2">Taken</span>} */}
+            {slugAvailable === false && (
+              <p className="text-sm text-red-500 mt-1">This slug is already taken.</p>
+            )}
           </label>
         </div>
       </div>
@@ -141,14 +160,13 @@ const NextStep: React.FC = () => {
       <div className="flex justify-between mt-6">
         <button
           onClick={() => navigate('/get-started')}
-          className="inline-flex items-center px-4 py-2 bg-gray-300 rounded-md text-sm font-medium text-gray-700"
+          className="inline-flex items-center px-4 py-2 bg-gray-300 rounded-md text-sm font-medium text-gray-700  hover:bg-indigo-200 hover:cursor-pointer"
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </button>
         <button
           onClick={handleContinue}
-          disabled={linkType === 'custom' && !slugAvailable}
-          className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700"
+          className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white rounded-md shadow hover:bg-indigo-700 hover:cursor-pointer"
         >
           Continue to Payment <ArrowRight className="ml-2 h-5 w-5" />
         </button>

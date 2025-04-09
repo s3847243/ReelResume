@@ -25,7 +25,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
         String ip = request.getRemoteAddr();
 
         return cache.computeIfAbsent(ip, k -> {
-            Bandwidth limit = Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1)));
+            Bandwidth limit = Bandwidth.classic(50, Refill.intervally(50, Duration.ofMinutes(1)));
             return Bucket.builder().addLimit(limit).build();
         });
     }

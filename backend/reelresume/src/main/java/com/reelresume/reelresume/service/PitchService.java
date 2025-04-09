@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.reelresume.reelresume.dto.CreatePitchRequest;
@@ -55,12 +56,16 @@ public class PitchService {
         return pitchRepository.save(pitch);
     }
 
-
+    @Cacheable(value = "pitchBySlug", key = "#slug")
     public Pitch getPitchBySlug(String slug) {
         Optional<Pitch> pitch = pitchRepository.findBySlug(slug);
+        System.out.println("❗ Fetching from MongoDB...");
         return pitch.orElseThrow(() -> new RuntimeException("Pitch not found"));
     }
     public Pitch getPitchBySessionId(String sessionId) {
         return pitchRepository.findByStripeSessionId(sessionId);
+    }
+    public boolean checkSlugAvailability(String slug){
+        return pitchRepository.existsBySlug(slug);
     }
 }
