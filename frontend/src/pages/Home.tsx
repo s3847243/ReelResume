@@ -1,6 +1,5 @@
-import React from 'react';
 import { Features } from '../components/Features';
-import { Camera, ExternalLink, Github, Linkedin, Video, FileText, Link as LinkIcon } from 'lucide-react';
+import { Camera, Video, FileText, Link as LinkIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function Home() {

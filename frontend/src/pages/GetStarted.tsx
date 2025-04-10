@@ -1,7 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import { Camera, Monitor, Upload, Play, Square, FileText, ArrowRight } from 'lucide-react';
-import NextStep from '../components/NextStep';
 import { useNavigate } from 'react-router-dom';
 import { usePitch } from '../contexts/PitchContext';
 export function GetStarted() {
@@ -13,20 +12,20 @@ export function GetStarted() {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<BlobPart[]>([]);
 
-  const [uploadedVideo, setUploadedVideo] = useState<File | null>(null);
+  // const [uploadedVideo, setUploadedVideo] = useState<File | null>(null);
 //   const { setResumeFile, setVideoBlob } = usePitch();
 const { videoBlob, setVideoBlob, resumeFile, setResumeFile } = usePitch();
 
   const navigate = useNavigate();
-const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
-  if (file && file.type.startsWith('video/')) {
-    setUploadedVideo(file);
-    setVideoBlob(null); // Reset recorded video if a new one is uploaded
-  } else {
-    alert('Please upload a valid video file (MP4, WebM, MOV).');
-  }
-};
+// const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+//   const file = event.target.files?.[0];
+//   if (file && file.type.startsWith('video/')) {
+//     setUploadedVideo(file);
+//     setVideoBlob(null); // Reset recorded video if a new one is uploaded
+//   } else {
+//     alert('Please upload a valid video file (MP4, WebM, MOV).');
+//   }
+// };
 
 
   const handleStartRecording = useCallback(async () => {
@@ -85,12 +84,12 @@ const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
   };
 
   const handleNext = () => {
-    if ((!videoBlob && !uploadedVideo) || !resumeFile) {
+    if ((!videoBlob ) || !resumeFile) {
       alert('Please complete both video recording/upload and resume upload before proceeding');
       return;
     }
         // Save to global context
-    setVideoBlob(videoBlob || uploadedVideo);
+    setVideoBlob(videoBlob );
     setResumeFile(resumeFile);
 
     // Go to next step

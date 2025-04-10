@@ -1,4 +1,3 @@
-import React from 'react';
 import { Camera, Github, Linkedin } from 'lucide-react';
 
 export function Footer() {
