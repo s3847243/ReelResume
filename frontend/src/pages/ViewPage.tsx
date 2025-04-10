@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import { getPitchBySlug } from '../api/pitchApi';
 interface Pitch {
   videoUrl: string;
   resumeUrl: string;
@@ -19,13 +19,9 @@ export default function ViewPage() {
 
   useEffect(() => {
     if (!slug) return;
-
-    fetch(`http://localhost:8080/api/pitch/slug/${slug}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Pitch not found');
-        return res.json();
-      })
-      .then(setPitch)
+  
+    getPitchBySlug(slug)
+      .then((res) => setPitch(res.data))
       .catch(() => setError('Pitch not found or unavailable'))
       .finally(() => setLoading(false));
   }, [slug]);

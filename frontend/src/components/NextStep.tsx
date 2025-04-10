@@ -2,7 +2,13 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { usePitch } from '../contexts/PitchContext';
 import React, { useState, useMemo, useEffect } from 'react';
-
+import {
+  uploadResume,
+  uploadVideo,
+  createPitch,
+  initiatePayment,
+  checkSlug
+} from '../api/pitchApi';
 const NextStep: React.FC = () => {
   const navigate = useNavigate();
   const { resumeFile, videoBlob } = usePitch();
@@ -39,9 +45,14 @@ const NextStep: React.FC = () => {
 
   const checkSlugAvailability = async () => {
     setCheckingSlug(true);
-    const res = await fetch(`http://localhost:8080/api/slug/check?value=${customSlug}`);
-    setSlugAvailable(res.status === 200);
-    setCheckingSlug(false);
+    try {
+      await checkSlug(customSlug);
+      setSlugAvailable(true);
+    } catch {
+      setSlugAvailable(false);
+    } finally {
+      setCheckingSlug(false);
+    }
   };
 
   const handleContinue = async () => {
@@ -50,54 +61,44 @@ const NextStep: React.FC = () => {
       // If custom slug is selected, check its availability one more time
       if (linkType === 'custom') {
         setCheckingSlug(true);
-        const res = await fetch(`http://localhost:8080/api/slug/check?value=${customSlug}`);
-        setCheckingSlug(false);
-
-        if (res.status !== 200) {
-          setSlugAvailable(false); // this triggers the "Taken" message in the UI
+        try {
+          await checkSlug(customSlug);
+          setSlugAvailable(true);
+        } catch {
+          setSlugAvailable(false);
           alert('This custom slug is already taken. Please choose another one.');
-          return; // stop the flow
-        } else {
-          setSlugAvailable(true); // still valid
+          return;
+        } finally {
+          setCheckingSlug(false);
         }
       }
       const resumeForm = new FormData();
       resumeForm.append('file', resumeFile);
-      const resumeRes = await fetch('http://localhost:8080/api/upload/resume', { method: 'POST', body: resumeForm });
-      const { resumeUrl } = await resumeRes.json();
+      const resumeRes = await uploadResume(resumeFile);
+      const { resumeUrl } = await resumeRes.data;
 
       // Upload video
       const videoForm = new FormData();
       videoForm.append('file', new File([videoBlob], 'video.webm', { type: 'video/webm' }    ));
-      const videoRes = await fetch('http://localhost:8080/api/upload/video', { method: 'POST', body: videoForm });
-      const { videoUrl } = await videoRes.json();
+      const videoRes = await uploadVideo(new File([videoBlob], 'video.webm', { type: 'video/webm' }));
+      const { videoUrl } = await videoRes.data;
 
       // Create pitch
-      const pitchRes = await fetch('http://localhost:8080/api/pitch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          videoUrl,
-          resumeUrl,
-          slug: linkType === 'custom' ? customSlug : '',
-          linkType
-        })
+      const pitchRes = await createPitch({
+        videoUrl,
+        resumeUrl,
+        slug: linkType === 'custom' ? customSlug : '',
+        linkType,
       });
-      if (!pitchRes.ok) throw new Error("Failed to create pitch");
+      if (!pitchRes.data.ok) throw new Error("Failed to create pitch");
 
-      const pitch = await pitchRes.json();
+      const pitch = await pitchRes.data();
       console.log(pitch);
       // Start Stripe payment
-      const payRes = await fetch('http://localhost:8080/api/pay', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          pitchId: pitch.id,
-          linkType
-        })
-      });
+      const payRes = await initiatePayment(pitch.id, linkType);
 
-      const { checkoutUrl } = await payRes.json();
+
+      const { checkoutUrl } = await payRes.data();
 
       window.location.href = checkoutUrl;
     } catch (err) {
@@ -127,11 +128,11 @@ const NextStep: React.FC = () => {
         <div className="space-y-2">
           <label className="flex items-center gap-2">
             <input type="radio" checked={linkType === 'default'} onChange={() => setLinkType('default')} />
-            Default (random slug)
+            Default (random slug) 0.5USD
           </label>
           <label className="flex items-center gap-2">
             <input type="radio" checked={linkType === 'custom'} onChange={() => setLinkType('custom')} />
-            Custom slug:
+            Custom slug: 1.5USD
             <input
               type="text"
               className={`ml-2 border px-2 py-1 rounded ${
