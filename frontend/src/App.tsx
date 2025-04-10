@@ -9,6 +9,7 @@ import { GetStarted } from './pages/GetStarted';
 import NextStep from './components/NextStep';
 import Success from './pages/Success';
 import ViewPage from './pages/ViewPage';
+import Cancel from './pages/Cancel';
 function App() {
   return (
     <Router>
@@ -22,7 +23,7 @@ function App() {
           <Route path="/next-step" element={<NextStep />} />
           <Route path="/success" element={<Success />} />
           <Route path="/view/:slug" element={<ViewPage />} />
-
+          <Route path="/cancel" element={<Cancel />} />
         </Routes>
         <Footer />
       </div>
