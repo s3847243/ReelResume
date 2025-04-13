@@ -47,7 +47,7 @@ public class WebhookController {
         try {
             event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
         } catch (SignatureVerificationException e) {
-            System.out.println("❌ Webhook signature verification failed");
+            System.out.println("Webhook signature verification failed");
             return ResponseEntity.badRequest().body("Invalid signature");
         }
     
