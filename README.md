@@ -6,7 +6,7 @@ ReelResume is a full-stack web application that enables job seekers to showcase 
 
 ## 🚀 Live Demo
 🌐 [Live Frontend](https://reel-resume.vercel.app/)  
-📽️ Example View Page: `https://yourdomain.com/view/{slug}`
+📽️ Example View Page: `https://reel-resume.vercel.app/view/9g485e`
 
 ---
 
@@ -39,13 +39,36 @@ Recruiters respond more positively to candidates who present themselves through 
 
 ---
 
-## 🧪 API Overview
+## 🔌 API Endpoints
 
-| Method | Endpoint           | Description                        |
-|--------|--------------------|------------------------------------|
-| `GET`  | `/view/{slug}`     | Public view page for resume+video |
-| `POST` | `/api/upload`      | Upload resume and video           |
-| `POST` | `/api/payment`     | Initiate Stripe payment           |
+### 🔄 Pitch Management (`/api/pitch`)
+| Method | Endpoint                      | Description                                      |
+|--------|-------------------------------|--------------------------------------------------|
+| `POST` | `/api/pitch`                  | Create a new pitch from user data               |
+| `GET`  | `/api/pitch/{slug}`           | Retrieve pitch data by slug                     |
+| `GET`  | `/api/pitch/by-session/{id}`  | Get pitch by session ID (only if paid)          |
+| `GET`  | `/api/pitch/slug/{slug}`      | Get pitch by slug (only if paid)                |
+
+### 📦 File Uploads (`/api/upload`)
+| Method | Endpoint                | Description               |
+|--------|-------------------------|---------------------------|
+| `POST` | `/api/upload/resume`    | Upload resume file (PDF) |
+| `POST` | `/api/upload/video`     | Upload pitch video (MP4) |
+
+### 💳 Payment & Domain (`/api/pay`)
+| Method | Endpoint       | Description                    |
+|--------|----------------|--------------------------------|
+| `POST` | `/api/pay`     | Initiate Stripe payment flow   |
+
+### 🔎 Slug Validation (`/api/slug`)
+| Method | Endpoint              | Description                   |
+|--------|-----------------------|-------------------------------|
+| `GET`  | `/api/slug/check`     | Check if a slug is available |
+
+### 🔁 Webhooks (`/webhook`)
+| Method | Endpoint      | Description                          |
+|--------|---------------|--------------------------------------|
+| `POST` | `/webhook`    | Stripe webhook to confirm payment    |
 
 ---
 
