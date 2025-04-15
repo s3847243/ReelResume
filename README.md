@@ -5,7 +5,7 @@ ReelResume is a full-stack web application that enables job seekers to showcase 
 ---
 
 ## 🚀 Live Demo
-🌐 [Live Frontend](https://your-vercel-link.vercel.app)  
+🌐 [Live Frontend](https://reel-resume.vercel.app/)  
 📽️ Example View Page: `https://yourdomain.com/view/{slug}`
 
 ---
