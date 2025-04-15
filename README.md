@@ -23,6 +23,7 @@ Recruiters respond more positively to candidates who present themselves through 
 - **Hosting:** Render (Backend), Vercel (Frontend)
 - **Payments:** Stripe (Custom domain upgrade)
 - **Caching:** Redis
+- **Storage:** AWS S3 (for videos and resumes)
 - **Rate Limiting:** Bucket4j (50 req/min on public view endpoint)
 
 ---
@@ -31,6 +32,7 @@ Recruiters respond more positively to candidates who present themselves through 
 
 - 📁 Upload Resume (PDF) and Video (MP4)
 - 🔗 Auto-generated shareable link: `/view/{slug}`
+- ☁️ Files are securely uploaded and stored in **Amazon S3**
 - 🚀 Deployed to production using Render (API) and Vercel (Frontend)
 - 🧠 Redis-based caching to avoid repetitive DB hits on public view
 - 🛡️ Rate-limited endpoint using Bucket4j (50 requests/minute)
